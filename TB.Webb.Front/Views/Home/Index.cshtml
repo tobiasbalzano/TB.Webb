@@ -1,0 +1,119 @@
+﻿
+<header>
+    <tb-menu :show.sync="true" :show_menu.sync="ShowMenu">
+
+    </tb-menu>
+
+</header>
+
+<div class="body-content">
+    <div class="row">
+        <div class="">
+            <h1 class="text-center">
+                {{Content.resume_header}}
+            </h1>
+        </div>
+        <div class="col-xs-4 pull-right">
+            <tb-resume-contact-info :show.sync="Contact" :content.sync="Content.resume_contact_info">
+
+            </tb-resume-contact-info>
+        </div>
+        <div>
+            <ul v-if="Content.resume_sections">
+                <li v-for="section in Content.resume_sections | section_sorter" class="col-xs-12">
+                    <tb-resume-section :show.sync="Sections" :content.sync="section">
+
+                    </tb-resume-section>
+
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</div>
+
+
+@section Scripts{
+
+    <script type="x/template" id="tb-menu">
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <i class="fa fa-3x fa-bars" v-on:click="ToggleMenu"></i>
+            <h2 slot="menu-text">{{String}}</h2>
+        </div>
+        <div class="menu" v-show="show_menu" transition="menu">
+            <div class="menu-placement">
+
+            </div>
+        </div>
+    </script>
+
+    <script type="x/template" id="tb-resume-contact-info">
+        <div class="resume-section contact-info row" v-if="show">
+            <div class="col-xs-12">
+                <img v-bind:src="content.photo" alt="profile picture" class="img-responsive pull-right profile-picture" />
+                <p v-if="content.name"><i class="fa fa-1x fa-fw fa-user"></i> {{content.name}}</p>
+                <p v-if="content.email"><i class="fa fa-1x fa-fw fa-envelope"></i> {{content.email}}</p>
+                <p v-if="content.address"><i class="fa fa-1x fa-fw fa-home"></i> {{content.address}}</p>
+                <p v-if="content.phone"><i class="fa fa-1x fa-fw fa-phone"></i> {{content.phone}}</p>
+                <p v-if="content.phone2"><i class="fa fa-1x fa-fw fa-mobile"></i> {{content.phone2}}</p>
+                <p v-if="content.phone3"><i class="fa fa-1x fa-fw fa-building"></i> {{content.phone3}}</p>
+                <p v-if="content.webpage"><i class="fa fa-1x fa-fw fa-briefcase"></i> <a v-bind:href="'http://www.'+content.webpage" target="_blank">{{content.webpage}}</a>  </p>
+                <p v-if="content.github"><i class="fa fa-1x fa-fw fa-git"></i> <a v-bind:href="'http://www.'+content.github" target="_blank">{{content.github}}</a>   </p>
+                <p v-if="content.linkedin"><i class="fa fa-1x fa-fw fa-linkedin"></i> <a v-bind:href="'http://www.'+content.linkedin" target="_blank">{{content.linkedin}}</a>   </p>
+                <p v-if="content.external_link1"><i class="fa fa-fw fa-1x fa-link"></i> <a v-bind:href="'http://www.'+content.external_link1" target="_blank">{{content.external_link1}}</a></p>
+                <p v-if="content.external_link2"><i class="fa fa-fw fa-1x fa-link"></i> <a v-bind:href="'http://www.'+content.external_link2" target="_blank">{{content.external_link2}}</a>  </p>
+                <p v-if="content.external_link3"><i class="fa fa-fw fa-1x fa-link"></i> <a v-bind:href="'http://www.'+content.external_link3" target="_blank">{{content.external_link3}}</a>    </p>
+            </div>
+            @*<div class="col-xs-4">
+                    <img v-bind:src="content.photo" alt="profile picture" class="img-responsive" />
+                </div>*@
+        </div>
+    </script>
+
+    <script type="x/template" id="tb-resume-section">
+        <div class="resume-section {{content.content_header}} col-xs-12">
+            <ul>
+                <li>
+                    <h3>{{content.content_header}}</h3>
+                </li>
+                <li v-for="entry in content | sort" class="row" draggable="true">
+                    <tb-resume-entry :show.sync=true :content.sync="entry">
+                    </tb-resume-entry>
+                </li>
+            </ul>
+        </div>
+    </script>
+
+    <script type="x/template" id="tb-resume-entry">
+        <div class="col-xs-3" v-if="content.start_date">
+            <p v-if="content.start_date   " class="date start-date" v-text="content.start_date  | date">  </p>
+            <p v-if="content.end_date     " class="date" v-text="content.end_date | date content.current"></p>
+        </div>
+        <div class="col-xs-9">
+            @*<p v-if="content.role         " class="bold">{{content.role            }}</p>*@
+            <h4 v-if="content.establishment" class="no-break bold">{{content.establishment   }}</h4>
+            <p v-if="content.role         " class="bold">{{content.role            }}</p>
+            <p v-if="content.additional   " class="no-break bold">{{content.additional      }}</p>
+            <br />
+            <p v-if="content.description  ">{{content.description     }}</p>
+        </div>
+        <div class="col-xs-3" v-if="content.start_date"></div>
+        <div class="col-xs-9 ">
+            <tb-resume-tags :show.sync="true" :content.sync="content.tags"></tb-resume-tags>
+            <hr />
+        </div>
+    </script>
+
+    <script type="x/template" id="tb-resume-tags">
+        <div class="row">
+            <div class="col-xs-11">
+                <div class="tag" v-for="tag in content">{{tag.tag}}</div>
+            </div>
+        </div>
+    </script>
+
+    <script type="text/javascript">
+        var string = "@ViewBag.Title";
+    </script>
+    <script src="~/Scripts/app.js"></script>
+}

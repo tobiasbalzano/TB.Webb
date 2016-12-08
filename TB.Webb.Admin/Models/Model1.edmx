@@ -1,0 +1,442 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="tb.Web.LocalModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="__MigrationHistory">
+          <Key>
+            <PropertyRef Name="MigrationId" />
+            <PropertyRef Name="ContextKey" />
+          </Key>
+          <Property Name="MigrationId" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="ContextKey" Type="nvarchar" MaxLength="300" Nullable="false" />
+          <Property Name="Model" Type="varbinary(max)" Nullable="false" />
+          <Property Name="ProductVersion" Type="nvarchar" MaxLength="32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Resume">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ResumeHeader" Type="nvarchar(max)" />
+          <Property Name="ResumeContactInfoId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ResumeContactInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Photo" Type="nvarchar(max)" />
+          <Property Name="Name" Type="nvarchar(max)" />
+          <Property Name="Email" Type="nvarchar(max)" />
+          <Property Name="Address" Type="nvarchar(max)" />
+          <Property Name="Phone" Type="nvarchar(max)" />
+          <Property Name="Phone2" Type="nvarchar(max)" />
+          <Property Name="Phone3" Type="nvarchar(max)" />
+          <Property Name="WebPage" Type="nvarchar(max)" />
+          <Property Name="Github" Type="nvarchar(max)" />
+          <Property Name="LinkedIn" Type="nvarchar(max)" />
+          <Property Name="ExternalLink1" Type="nvarchar(max)" />
+          <Property Name="ExternalLink2" Type="nvarchar(max)" />
+          <Property Name="ExternalLink3" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="ResumeEntry">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ResumeSectionId" Type="int" Nullable="false" />
+          <Property Name="Role" Type="nvarchar(max)" />
+          <Property Name="Establishment" Type="nvarchar(max)" />
+          <Property Name="Additional" Type="nvarchar(max)" />
+          <Property Name="StartDate" Type="datetime" />
+          <Property Name="EndDate" Type="datetime" />
+          <Property Name="CurrentPosition" Type="bit" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="Sorter" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ResumeEntryResumeTag">
+          <Key>
+            <PropertyRef Name="ResumeEntry_Id" />
+            <PropertyRef Name="ResumeTag_Id" />
+          </Key>
+          <Property Name="ResumeEntry_Id" Type="int" Nullable="false" />
+          <Property Name="ResumeTag_Id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ResumeSection">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ResumeId" Type="int" Nullable="false" />
+          <Property Name="ContentHeader" Type="nvarchar(max)" />
+          <Property Name="Sorter" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ResumeTag">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Tag" Type="nvarchar(max)" />
+        </EntityType>
+        <Association Name="FK_dbo_Resume_dbo_ResumeContactInfo_ResumeContactInfoId">
+          <End Role="ResumeContactInfo" Type="Self.ResumeContactInfo" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Resume" Type="Self.Resume" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ResumeContactInfo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Resume">
+              <PropertyRef Name="ResumeContactInfoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_ResumeEntry_dbo_ResumeSection_ResumeSectionId">
+          <End Role="ResumeSection" Type="Self.ResumeSection" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ResumeEntry" Type="Self.ResumeEntry" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ResumeSection">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ResumeEntry">
+              <PropertyRef Name="ResumeSectionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_ResumeEntryResumeTag_dbo_ResumeEntry_ResumeEntry_Id">
+          <End Role="ResumeEntry" Type="Self.ResumeEntry" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ResumeEntryResumeTag" Type="Self.ResumeEntryResumeTag" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ResumeEntry">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ResumeEntryResumeTag">
+              <PropertyRef Name="ResumeEntry_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_ResumeEntryResumeTag_dbo_ResumeTag_ResumeTag_Id">
+          <End Role="ResumeTag" Type="Self.ResumeTag" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ResumeEntryResumeTag" Type="Self.ResumeEntryResumeTag" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ResumeTag">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ResumeEntryResumeTag">
+              <PropertyRef Name="ResumeTag_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_ResumeSection_dbo_Resume_ResumeId">
+          <End Role="Resume" Type="Self.Resume" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ResumeSection" Type="Self.ResumeSection" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Resume">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ResumeSection">
+              <PropertyRef Name="ResumeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="tbWebLocalModelStoreContainer">
+          <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Resume" EntityType="Self.Resume" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ResumeContactInfo" EntityType="Self.ResumeContactInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ResumeEntry" EntityType="Self.ResumeEntry" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ResumeEntryResumeTag" EntityType="Self.ResumeEntryResumeTag" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ResumeSection" EntityType="Self.ResumeSection" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ResumeTag" EntityType="Self.ResumeTag" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_dbo_Resume_dbo_ResumeContactInfo_ResumeContactInfoId" Association="Self.FK_dbo_Resume_dbo_ResumeContactInfo_ResumeContactInfoId">
+            <End Role="ResumeContactInfo" EntitySet="ResumeContactInfo" />
+            <End Role="Resume" EntitySet="Resume" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_ResumeEntry_dbo_ResumeSection_ResumeSectionId" Association="Self.FK_dbo_ResumeEntry_dbo_ResumeSection_ResumeSectionId">
+            <End Role="ResumeSection" EntitySet="ResumeSection" />
+            <End Role="ResumeEntry" EntitySet="ResumeEntry" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_ResumeEntryResumeTag_dbo_ResumeEntry_ResumeEntry_Id" Association="Self.FK_dbo_ResumeEntryResumeTag_dbo_ResumeEntry_ResumeEntry_Id">
+            <End Role="ResumeEntry" EntitySet="ResumeEntry" />
+            <End Role="ResumeEntryResumeTag" EntitySet="ResumeEntryResumeTag" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_ResumeEntryResumeTag_dbo_ResumeTag_ResumeTag_Id" Association="Self.FK_dbo_ResumeEntryResumeTag_dbo_ResumeTag_ResumeTag_Id">
+            <End Role="ResumeTag" EntitySet="ResumeTag" />
+            <End Role="ResumeEntryResumeTag" EntitySet="ResumeEntryResumeTag" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_ResumeSection_dbo_Resume_ResumeId" Association="Self.FK_dbo_ResumeSection_dbo_Resume_ResumeId">
+            <End Role="Resume" EntitySet="Resume" />
+            <End Role="ResumeSection" EntitySet="ResumeSection" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="tb.Web.LocalModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Resume">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ResumeHeader" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ResumeSection" Relationship="Self.FK_dbo_ResumeSection_dbo_Resume_ResumeId" FromRole="Resume" ToRole="ResumeSection" />
+          <Property Name="ResumeContactInfoId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ResumeContactInfo1" Relationship="tb.Web.LocalModel.FK_dbo_Resume_dbo_ResumeContactInfo_ResumeContactInfoId" FromRole="Resume" ToRole="ResumeContactInfo" />
+        </EntityType>
+        <EntityType Name="ResumeContactInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Photo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Phone2" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Phone3" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="WebPage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Github" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LinkedIn" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ExternalLink1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ExternalLink2" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ExternalLink3" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="ResumeEntry">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ResumeSectionId" Type="Int32" Nullable="false" />
+          <Property Name="Role" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Establishment" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Additional" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="StartDate" Type="DateTime" Nullable="true" Precision="3" />
+          <Property Name="EndDate" Type="DateTime" Nullable="true" Precision="3" />
+          <Property Name="CurrentPosition" Type="Boolean" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ResumeSection" Relationship="Self.FK_dbo_ResumeEntry_dbo_ResumeSection_ResumeSectionId" FromRole="ResumeEntry" ToRole="ResumeSection" />
+          <NavigationProperty Name="ResumeTag" Relationship="Self.ResumeEntryResumeTag" FromRole="ResumeEntry" ToRole="ResumeTag" />
+          <Property Name="Sorter" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ResumeSection">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ResumeId" Type="Int32" Nullable="false" />
+          <Property Name="ContentHeader" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Resume" Relationship="Self.FK_dbo_ResumeSection_dbo_Resume_ResumeId" FromRole="ResumeSection" ToRole="Resume" />
+          <NavigationProperty Name="ResumeEntry" Relationship="Self.FK_dbo_ResumeEntry_dbo_ResumeSection_ResumeSectionId" FromRole="ResumeSection" ToRole="ResumeEntry" />
+          <Property Name="Sorter" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ResumeTag">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Tag" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ResumeEntry" Relationship="Self.ResumeEntryResumeTag" FromRole="ResumeTag" ToRole="ResumeEntry" />
+        </EntityType>
+        <Association Name="FK_dbo_ResumeSection_dbo_Resume_ResumeId">
+          <End Role="Resume" Type="Self.Resume" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ResumeSection" Type="Self.ResumeSection" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Resume">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ResumeSection">
+              <PropertyRef Name="ResumeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_ResumeEntry_dbo_ResumeSection_ResumeSectionId">
+          <End Role="ResumeSection" Type="Self.ResumeSection" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ResumeEntry" Type="Self.ResumeEntry" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ResumeSection">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ResumeEntry">
+              <PropertyRef Name="ResumeSectionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ResumeEntryResumeTag">
+          <End Role="ResumeEntry" Type="Self.ResumeEntry" Multiplicity="*" />
+          <End Role="ResumeTag" Type="Self.ResumeTag" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Resume" EntityType="Self.Resume" />
+          <EntitySet Name="ResumeContactInfo" EntityType="Self.ResumeContactInfo" />
+          <EntitySet Name="ResumeEntry" EntityType="Self.ResumeEntry" />
+          <EntitySet Name="ResumeSection" EntityType="Self.ResumeSection" />
+          <EntitySet Name="ResumeTag" EntityType="Self.ResumeTag" />
+          <AssociationSet Name="FK_dbo_ResumeSection_dbo_Resume_ResumeId" Association="Self.FK_dbo_ResumeSection_dbo_Resume_ResumeId">
+            <End Role="Resume" EntitySet="Resume" />
+            <End Role="ResumeSection" EntitySet="ResumeSection" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_ResumeEntry_dbo_ResumeSection_ResumeSectionId" Association="Self.FK_dbo_ResumeEntry_dbo_ResumeSection_ResumeSectionId">
+            <End Role="ResumeSection" EntitySet="ResumeSection" />
+            <End Role="ResumeEntry" EntitySet="ResumeEntry" />
+          </AssociationSet>
+          <AssociationSet Name="ResumeEntryResumeTag" Association="Self.ResumeEntryResumeTag">
+            <End Role="ResumeEntry" EntitySet="ResumeEntry" />
+            <End Role="ResumeTag" EntitySet="ResumeTag" />
+          </AssociationSet>
+          <EntitySet Name="C__MigrationHistory" EntityType="tb.Web.LocalModel.C__MigrationHistory" />
+          <AssociationSet Name="FK_dbo_Resume_dbo_ResumeContactInfo_ResumeContactInfoId" Association="tb.Web.LocalModel.FK_dbo_Resume_dbo_ResumeContactInfo_ResumeContactInfoId">
+            <End Role="ResumeContactInfo" EntitySet="ResumeContactInfo" />
+            <End Role="Resume" EntitySet="Resume" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="C__MigrationHistory">
+          <Key>
+            <PropertyRef Name="MigrationId" />
+            <PropertyRef Name="ContextKey" />
+          </Key>
+          <Property Name="MigrationId" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="ContextKey" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="Model" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
+          <Property Name="ProductVersion" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK_dbo_Resume_dbo_ResumeContactInfo_ResumeContactInfoId">
+          <End Type="tb.Web.LocalModel.ResumeContactInfo" Role="ResumeContactInfo" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="tb.Web.LocalModel.Resume" Role="Resume" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ResumeContactInfo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Resume">
+              <PropertyRef Name="ResumeContactInfoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="tbWebLocalModelStoreContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="Resume">
+            <EntityTypeMapping TypeName="tb.Web.LocalModel.Resume">
+              <MappingFragment StoreEntitySet="Resume">
+                <ScalarProperty Name="ResumeContactInfoId" ColumnName="ResumeContactInfoId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ResumeHeader" ColumnName="ResumeHeader" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ResumeContactInfo">
+            <EntityTypeMapping TypeName="tb.Web.LocalModel.ResumeContactInfo">
+              <MappingFragment StoreEntitySet="ResumeContactInfo">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Phone2" ColumnName="Phone2" />
+                <ScalarProperty Name="Phone3" ColumnName="Phone3" />
+                <ScalarProperty Name="WebPage" ColumnName="WebPage" />
+                <ScalarProperty Name="Github" ColumnName="Github" />
+                <ScalarProperty Name="LinkedIn" ColumnName="LinkedIn" />
+                <ScalarProperty Name="ExternalLink1" ColumnName="ExternalLink1" />
+                <ScalarProperty Name="ExternalLink2" ColumnName="ExternalLink2" />
+                <ScalarProperty Name="ExternalLink3" ColumnName="ExternalLink3" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ResumeEntry">
+            <EntityTypeMapping TypeName="tb.Web.LocalModel.ResumeEntry">
+              <MappingFragment StoreEntitySet="ResumeEntry">
+                <ScalarProperty Name="Sorter" ColumnName="Sorter" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ResumeSectionId" ColumnName="ResumeSectionId" />
+                <ScalarProperty Name="Role" ColumnName="Role" />
+                <ScalarProperty Name="Establishment" ColumnName="Establishment" />
+                <ScalarProperty Name="Additional" ColumnName="Additional" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="CurrentPosition" ColumnName="CurrentPosition" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ResumeSection">
+            <EntityTypeMapping TypeName="tb.Web.LocalModel.ResumeSection">
+              <MappingFragment StoreEntitySet="ResumeSection">
+                <ScalarProperty Name="Sorter" ColumnName="Sorter" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ResumeId" ColumnName="ResumeId" />
+                <ScalarProperty Name="ContentHeader" ColumnName="ContentHeader" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ResumeTag">
+            <EntityTypeMapping TypeName="tb.Web.LocalModel.ResumeTag">
+              <MappingFragment StoreEntitySet="ResumeTag">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Tag" ColumnName="Tag" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="ResumeEntryResumeTag" TypeName="tb.Web.LocalModel.ResumeEntryResumeTag" StoreEntitySet="ResumeEntryResumeTag">
+            <EndProperty Name="ResumeEntry">
+              <ScalarProperty Name="Id" ColumnName="ResumeEntry_Id" />
+            </EndProperty>
+            <EndProperty Name="ResumeTag">
+              <ScalarProperty Name="Id" ColumnName="ResumeTag_Id" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="C__MigrationHistory">
+            <EntityTypeMapping TypeName="tb.Web.LocalModel.C__MigrationHistory">
+              <MappingFragment StoreEntitySet="__MigrationHistory">
+                <ScalarProperty Name="ProductVersion" ColumnName="ProductVersion" />
+                <ScalarProperty Name="Model" ColumnName="Model" />
+                <ScalarProperty Name="ContextKey" ColumnName="ContextKey" />
+                <ScalarProperty Name="MigrationId" ColumnName="MigrationId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

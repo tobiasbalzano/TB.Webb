@@ -1,0 +1,210 @@
+﻿@import 'https://fonts.googleapis.com/css?family=Comfortaa:400,700|Gruppo|Josefin+Sans:400,700|Maven+Pro:400,700|Nixie+One|Poiret+One|Questrial|Quicksand:400,700|Source+Serif+Pro:400,700|Taviraj:400,700|Trirong:400,700|Work+Sans:400,700';
+
+/*
+    font-family: 'Poiret One', sans-serif;
+    font-family: 'Comfortaa', sans-serif;
+    font-family: 'Nixie One', sans-serif;
+    font-family: 'Gruppo', sans-serif;
+    font-family: 'Josefin Sans', sans-serif;
+    font-family: 'Quicksand', sans-serif;
+    font-family: 'Questrial', sans-serif;
+    font-family: 'Maven Pro', sans-serif;
+    font-family: 'Work Sans', sans-serif;
+    font-family: 'Source Serif Pro', serif;
+    font-family: 'Trirong', serif;
+    font-family: 'Taviraj', serif;
+*/
+/* Move down content because we have a fixed navbar that is 50px tall */
+body {
+    font-family: 'Comfortaa', sans-serif;
+    font-size: 12pt;
+    padding-top: 74px;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    padding: 0;
+}
+
+/* Wrapping element */
+/* Set some basic padding to keep content from hitting the edges */
+.body-content {
+    margin: 10px;
+    padding: 15px;
+    background-color: #f8f0d5;
+    border-radius: 15px;
+}
+
+/* Set widths on the form inputs since otherwise they're 100% wide */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+.navbar-inverse {
+    color: #fff;
+    z-index: 9999;
+}
+
+    .navbar-inverse i {
+        margin-left: 10px;
+        margin-top: 5px;
+    }
+
+.col-xs-12 {
+    width: auto;
+}
+
+h1 {
+    width: 100%;
+}
+
+.menu {
+    background-color: #222;
+    color: #fff;
+    padding: 15px;
+    padding-top: 74px;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9900;
+}
+
+    .menu h2 {
+        font-size: 20px;
+        display: inline;
+    }
+
+.profile-picture {
+    display: inline-block;
+}
+
+.resume-section {
+    border-radius: 7.5px;
+    padding: 10px;
+    margin: 5px;
+}
+
+.Work {
+    background-color: #f7dcdc;
+}
+
+.Education {
+    background-color: #cdf8e5;
+}
+
+.Hobby {
+    background-color: #d9e5fe;
+}
+
+.contact-info {
+    /*display: inline-block;*/
+    background-color: #f6d5fc;
+}
+
+.bold {
+    font-weight: 700;
+}
+
+.date {
+    font-weight: 700;
+}
+
+.start-date:after {
+    content: ' -';
+}
+
+.tag {
+    background-color: #dbdbdb;
+    color: #8a8a8a;
+    font-weight: 700;
+    padding: 3px;
+    margin-right: 5px;
+    margin-top: 5px;
+    text-align: center;
+    min-width: 20px;
+    max-width: 17%;
+    display: inline;
+    border-radius: 5px;
+    border-style: solid;
+    border-width: 1px;
+}
+
+.no-break {
+    display: inline;
+}
+/* Responsive: Portrait tablets and up */
+@media screen and (min-width: 768px) {
+    .jumbotron {
+        margin-top: 20px;
+    }
+
+    /*.body-content {
+        padding: 0;
+    }*/
+}
+
+@media print {
+    header nav footer {
+        display: none;
+    }
+
+    body {
+        padding: 0;
+        margin: 0;
+    }
+
+    .body-content {
+        margin: 0;
+        padding: 0;
+    }
+
+
+    .tag {
+        font-weight: 400;
+        text-align: center;
+        display: inline-block;
+        border-radius: 5px;
+        border-style: none;
+        border-width: 1px;
+        max-width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+        .tag::after {
+            content: ", \00a0";
+        }
+}
+/*
+    Transitions
+*/
+.menu {
+    transition: all .1s ease-out;
+    -webkit-transform-origin: left top;
+    transform-origin: left top;
+}
+
+.menu-enter, .menu-leave {
+    /*opacity: 0;*/
+    -webkit-transform: scale(0.0,1);
+    transform: scale(0.0,1);
+}
+
+
+
+
+/*
+    Printing
+*/
+
+@page {
+    margin: 0.5cm;
+}
